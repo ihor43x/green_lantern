@@ -1,7 +1,8 @@
 class Asteroid:
     def __init__(self, x, y):
         self.x = x
-        self.y = y     
+        self.y = y
+
 
 class Robot:
     def __init__(self, x, y, asteroid, direction):
@@ -14,12 +15,13 @@ class Robot:
 
     def turn_left(self):
         turns = {
-            "E" : "N",
-            "N" : "W",
-            "W" : "S",
-            "S" : "E"
+            "E": "N",
+            "N": "W",
+            "W": "S",
+            "S": "E"
         }
         self.direction = turns[self.direction]
+
 
 class MissAsteroidError(Exception):
     pass

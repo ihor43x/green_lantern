@@ -1,6 +1,7 @@
 import pytest
 from lonely_robot import Robot, Asteroid, MissAsteroidError
 
+
 class TestRobotCreation:
     def test_parameters(self):
         x, y = 10, 15
@@ -25,9 +26,12 @@ class TestRobotCreation:
             asteroid = Asteroid(*asteroid_size)
             Robot(*robot_coordinates, asteroid, "W")
 
+
 class TestRobotMovement:
-    def setup(self):
-        pass
+    def setup_module(self):
+        x, y = 10, 15
+        asteroid = Asteroid(x, y)
+        return robot = Robot(x, y, asteroid, "N")
 
     @pytest.mark.parametrize(
         "current_direction,expected_direction",
@@ -39,8 +43,5 @@ class TestRobotMovement:
         ]
     )
     def test_turn_left(self, current_direction, expected_direction):
-        x, y = 10, 15
-        self.asteroid = Asteroid(x, y)
-        self.robot = Robot(x, y, self.asteroid, current_direction)
         self.robot.turn_left()
         assert self.robot.direction == expected_direction
