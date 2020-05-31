@@ -28,10 +28,12 @@ class TestRobotCreation:
 
 
 class TestRobotMovement:
-    def setup_module(self):
+
+    @pytest.fixture(scope="module")
+    def robot(self):
         x, y = 10, 15
         asteroid = Asteroid(x, y)
-        return robot = Robot(x, y, asteroid, "N")
+        return Robot(x, y, asteroid, "N")
 
     @pytest.mark.parametrize(
         "current_direction,expected_direction",
@@ -42,6 +44,35 @@ class TestRobotMovement:
             ("E", "N")
         ]
     )
-    def test_turn_left(self, current_direction, expected_direction):
-        self.robot.turn_left()
-        assert self.robot.direction == expected_direction
+    def test_turn_left(self, robot, current_direction, expected_direction):
+        robot.turn_left()
+        assert robot.direction == expected_direction
+
+    @pytest.mark.parametrize(
+        "current_direction,expected_direction",
+        [
+            ("N", "E"),
+            ("E", "S"),
+            ("S", "W"),
+            ("W", "N")
+        ]
+    )
+    def test_turn_right(self, robot, current_direction, expected_direction):
+        robot.turn_right()
+        assert robot.direction == expected_direction
+
+
+    @pytest.mark.parametrize(
+        "direction,current_coordinates,new_coordinates",
+        [
+            ("N", (5, 10), (5, 11)),
+            ("E", (5, 10), (6, 10)),
+            ("S", (5, 10), (5, 9)),
+            ("W", (5, 10), (4, 10)),
+        ]
+    )
+    def test_move_forward(self, robot, direction, current_coordinates, new_coordinates):
+        robot.move_forward()
+        assert robot.direction == direction
+        # with pytest.raises(robot.move_forward()):
+        #     robot.x

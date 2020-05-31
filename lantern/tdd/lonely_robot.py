@@ -22,6 +22,18 @@ class Robot:
         }
         self.direction = turns[self.direction]
 
+    def turn_right(self):
+        turns = {
+            "N": "E",
+            "E": "S",
+            "S": "W",
+            "W": "N"
+        }
+        self.direction = turns[self.direction]
+
+    def move_forward(self):
+        pass
+
 
 class MissAsteroidError(Exception):
     pass
