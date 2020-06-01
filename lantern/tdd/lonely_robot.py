@@ -5,7 +5,7 @@ class Asteroid:
 
 
 class Robot:
-    def __init__(self, x, y, asteroid, direction):
+    def __init__(self, x, y, direction, asteroid):
         self.x = x
         self.y = y
         self.asteroid = asteroid
@@ -36,4 +36,4 @@ class Robot:
 
 
 class MissAsteroidError(Exception):
-    pass
+    print("The robot has failed")
