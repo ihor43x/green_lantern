@@ -55,8 +55,23 @@ class TestRobotMovement:
          ("S", (5, 10), (5, 9)),
          ("W", (5, 10), (4, 10))])
     def test_move_forward(self, robot, direction, current_coordinates, new_coordinates):
-        pass
-        # robot.move_forward()
-        # assert robot.direction == direction
-        # with pytest.raises(robot.move_forward()):
-        #     robot.x
+        robot.direction = direction
+        robot.x, robot.y = current_coordinates[0], current_coordinates[1]
+        robot.move_forward()
+        assert robot.direction == direction
+        assert robot.x == new_coordinates[0]
+        assert robot.y == new_coordinates[1]
+
+    @pytest.mark.parametrize(
+        "direction,current_coordinates,new_coordinates",
+        [("N", (5, 10), (5, 9)),
+         ("E", (5, 10), (4, 10)),
+         ("S", (5, 10), (5, 11)),
+         ("W", (5, 10), (6, 10))])
+    def test_move_backward(self, robot, direction, current_coordinates, new_coordinates):
+        robot.direction = direction
+        robot.x, robot.y = current_coordinates[0], current_coordinates[1]
+        robot.move_backward()
+        assert robot.direction == direction
+        assert robot.x == new_coordinates[0]
+        assert robot.y == new_coordinates[1]

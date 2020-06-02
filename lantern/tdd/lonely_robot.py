@@ -32,7 +32,24 @@ class Robot:
         self.direction = turns[self.direction]
 
     def move_forward(self):
-        pass
+        if self.direction == "N":
+            self.y += 1
+        elif self.direction == "E":
+            self.x += 1
+        elif self.direction == "S":
+            self.y -= 1
+        elif self.direction == "W":
+            self.x -= 1
+
+    def move_backward(self):
+        if self.direction == "N":
+            self.y -= 1
+        elif self.direction == "E":
+            self.x -= 1
+        elif self.direction == "S":
+            self.y += 1
+        elif self.direction == "W":
+            self.x += 1
 
 
 class MissAsteroidError(Exception):
