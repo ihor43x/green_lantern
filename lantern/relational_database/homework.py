@@ -5,7 +5,7 @@ def task_1_add_new_record_to_db(con) -> None:
     """
     Add a record for a new customer from Singapore
     {
-        'customer_name': 'Thomas',
+        'customername': 'Thomas',
         'contactname': 'David',
         'address': 'Some Address',
         'city': 'London',
@@ -70,7 +70,7 @@ def task_3_list_customers_in_germany(cur) -> list:
 
 def task_4_update_customer(con):
     """
-    Update first customer's name (Set customername equal to  'Johnny Depp')
+    Update first customer's name (Set customername equal to 'Johnny Depp')
     Args:
         con: psycopg connection
 
@@ -103,7 +103,7 @@ def task_5_delete_the_last_customer(con) -> None:
 
 def task_6_list_all_supplier_countries(cur) -> list:
     """
-    List all supplier countries
+    List all suppliers' countries
 
     Args:
         cur: psycopg cursor
@@ -119,7 +119,7 @@ def task_6_list_all_supplier_countries(cur) -> list:
 
 def task_7_list_supplier_countries_in_desc_order(cur) -> list:
     """
-    List all supplier countries in descending order
+    List all suppliers' countries in descending order
 
     Args:
         cur: psycopg cursor
@@ -161,7 +161,12 @@ def task_9_count_customers_by_country_with_than_10_customers(cur):
 
     Returns: 3 records
     """
-    pass
+    cur.execute("""
+        SELECT COUNT(customername), country
+        FROM customers
+        GROUP BY country
+        HAVING COUNT(customername) > 10;""")
+    return cur.fetchall()
 
 
 def task_10_list_first_10_customers(cur):
@@ -170,19 +175,27 @@ def task_10_list_first_10_customers(cur):
 
     Results: 10 records
     """
-    pass
+    cur.execute("""
+        SELECT *
+        FROM customers
+        FETCH FIRST 10 ROWS ONLY;""")
+    return cur.fetchall()
 
 
 def task_11_list_customers_starting_from_11th(cur):
     """
-    List all customers starting from 11th record
+    List all customers starting from 12th record
 
     Args:
         cur: psycopg cursor
 
     Returns: 11 records
     """
-    pass
+    cur.execute("""
+        SELECT *
+        FROM customers
+        WHERE customerid > 11;""")
+    return cur.fetchall()
 
 
 def task_12_list_suppliers_from_specified_countries(cur):
@@ -194,7 +207,11 @@ def task_12_list_suppliers_from_specified_countries(cur):
 
     Returns: 8 records
     """
-    pass
+    cur.execute("""
+        SELECT supplierid, suppliername, contactname, city, country
+        FROM suppliers
+        WHERE country = 'USA' OR country = 'UK' OR country = 'Japan';""")
+    return cur.fetchall()
 
 
 def task_13_list_products_from_sweden_suppliers(cur):
@@ -206,7 +223,12 @@ def task_13_list_products_from_sweden_suppliers(cur):
 
     Returns: 3 records
     """
-    pass
+    cur.execute("""
+        SELECT productname
+        FROM products
+        LEFT JOIN suppliers s on products.supplierid = s.supplierid
+        WHERE s.country = 'Sweden';""")
+    return cur.fetchall()
 
 
 def task_14_list_products_with_supplier_information(cur):
@@ -218,7 +240,11 @@ def task_14_list_products_with_supplier_information(cur):
 
     Returns: 77 records
     """
-    pass
+    cur.execute("""
+        SELECT productid, productname, unit, price, country, city, suppliername
+        FROM products
+        LEFT JOIN suppliers s on products.supplierid = s.supplierid;""")
+    return cur.fetchall()
 
 
 def task_15_list_customers_with_any_order_or_not(cur):
@@ -230,7 +256,11 @@ def task_15_list_customers_with_any_order_or_not(cur):
 
     Returns: 213 records
     """
-    pass
+    cur.execute("""
+        SELECT c.customername, c.contactname, c.country, o.orderid
+        FROM customers c
+        LEFT JOIN orders o on c.customerid = o.customerid;""")
+    return cur.fetchall()
 
 
 def task_16_match_all_customers_and_suppliers_by_country(cur):
@@ -242,8 +272,9 @@ def task_16_match_all_customers_and_suppliers_by_country(cur):
 
     Returns: 194 records
     """
-    pass
-
-
-if __name__ == "__main__":
-    task_1_add_new_record_to_db()
+    cur.execute("""
+        SELECT c.customername, c.address, c.country as customercountry, s.country as suppliercountry, s.suppliername
+        FROM customers c
+        FULL OUTER JOIN suppliers s on c.country = s.country
+        ORDER BY customercountry, suppliercountry;""")
+    return cur.fetchall()
