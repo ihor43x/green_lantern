@@ -1,6 +1,6 @@
 import psycopg2
 
-from database.config import DATABASE
+from config import DATABASE
 from db_utils import clear_tables, drop_tables
 
 if __name__ == "__main__":

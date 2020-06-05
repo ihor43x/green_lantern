@@ -91,8 +91,8 @@ class TestSQLQueries(unittest.TestCase):
             cursor.execute("SELECT * from customers;")
             actual_result = [dict(record) for record in cursor]
             expected_result = self.load_rows_from_file("task_1.json")
-        for i, row in enumerate(actual_result):
-            self.assertDictEqual(row, expected_result[i])
+        for i, row in enumerate(expected_result):
+            self.assertDictEqual(row, actual_result[i])
 
     def test_task_2(self):
         with self.conn.cursor(cursor_factory=RealDictCursor) as cursor:
